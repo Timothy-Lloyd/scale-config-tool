@@ -13,43 +13,41 @@ usern = vars.username
 password = vars.password
 secret = vars.secret
 pt = vars.port
+dev_type = vars.devicetype
 
 localtime = time.localtime()
 formattime = time.strftime("%d-%m-%Y %H:%M:%S" , localtime)
 datetime = time.strftime("%d-%m-%Y" , localtime)
 
-print ("Starting tool...")
+print("Starting tool...")
 
-checkconfig = dict()
+checkconfig = []
 file = open("check-config.csv" , "r")
 for line in file:
-	print (line)
-	checkconfig.update({line.split(",")[0]:line.split(",")[1]})
-	showcmd = checkconfig(0)
-	verifycmd = checkconfig(1)
-	print(checkconfig(0))
+	checkconfig = line.split(",")
+	showcmd = (checkconfig[0])
+	verifycmd = (checkconfig[1])
 
 resolveconfig = []
 file = open("resolve-config.txt" , "r")
 for line in file:
-	print (line)
-	resolveconfig.update(line)
+	resolveconfig.append(line)
 
 devices = dict()
 file = open("devices.csv" , "r")
 for line in file:
-	devices.update({line.split(",")[0]:line.split(",")[1]:line.split(",")[2]})
+	devices.update({line.split(",")[0]:line.split(",")[1]})
 
-for dev_name, dev_address, dev_type in devices.items():
+for dev_name, dev_address in devices.items():
 	try:
 		sw = {
-			'device_type': dev_type.strip(),
-			'ip':   dev_address.strip(),
-			'username': usern,
-			'password': password,
-			'secret': secret,
-			'port' : pt,
-			'verbose': False
+		'device_type': dev_type,
+		'ip':   dev_address.strip(),
+		'username': usern,
+		'password': password,
+		'secret': secret,
+		'port' : pt,
+		'verbose': False
 		}
 		net_connect = ConnectHandler(**sw)
 		net_connect.enable()
@@ -66,8 +64,8 @@ for dev_name, dev_address, dev_type in devices.items():
 
 	except:
 		fi = open(os.path.join("output/FAILED DEVICES " + datetime + ".txt"), "a")
-			fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nCheck ssh access to: " + dev_address + "\r\n")
-			fi.close()
+		fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nCheck ssh access to: " + dev_address + "\r\n")
+		fi.close()
 		print(dev_name + ":\r\nError detected, check manually...")
 		continue
 
