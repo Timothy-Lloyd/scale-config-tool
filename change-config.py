@@ -41,13 +41,13 @@ for line in file:
 for dev_name, dev_address in devices.items():
 	try:
 		sw = {
-		'device_type': dev_type,
-		'ip':   dev_address.strip(),
-		'username': usern,
-		'password': password,
-		'secret': secret,
-		'port' : pt,
-		'verbose': False
+			'device_type': dev_type,
+			'ip': dev_address.strip(),
+			'username': usern,
+			'password': password,
+			'secret': secret,
+			'port' : pt,
+			'verbose': False
 		}
 		net_connect = ConnectHandler(**sw)
 		net_connect.enable()
@@ -63,10 +63,11 @@ for dev_name, dev_address in devices.items():
 		net_connect.disconnect()
 
 	except:
+		print(dev_name + ":\r\nError detected, check manually...")
 		fi = open(os.path.join("output/FAILED DEVICES " + datetime + ".txt"), "a")
 		fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nCheck ssh access to: " + dev_address + "\r\n")
 		fi.close()
-		print(dev_name + ":\r\nError detected, check manually...")
-		continue
+	continue
 
 print("Tool finished...")
+input()

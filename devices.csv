@@ -1,3 +1,2 @@
-﻿#name,#ipaddress,#type
-sw1,1.1.1.1,arista
-sw2,1.1.1.2,cisco-ios
+sw1,1.12.1.1
+sw2,192.168.5.2
