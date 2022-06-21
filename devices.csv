@@ -1,0 +1,3 @@
+﻿#name,#ipaddress,#type
+sw1,1.1.1.1,arista
+sw2,1.1.1.2,cisco-ios

@@ -1,0 +1,2 @@
+#show command,#expected output
+show run | include "tacacs-server host 10.1.1.1",tacacs-server host 10.1.1.1
