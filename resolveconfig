@@ -1,7 +1,4 @@
-#add new TACACS server and remove old
 
-conf t
 tacacs-server host 20.1.1.1 key password
 no tacacs-server host 10.1.1.1
-end
 
