@@ -13,9 +13,8 @@ Further to the overview above, the tool follows this logic flow:
 1. Load device from "devices.csv"  
 2. SSH to device, send a show command defined as "show" within "checkconfig.py". In this example, we're trying to see if the device has the old authentication server and therefore needs to be updated with the new IP  
 3. Check if the output from the show command matches a string defined as "verify" within "checkconfig.py". In our example, the string is set as part of a configuration line associated with the old authentication server   
-  3.1 If the output does not match, it is assumed that the configuration does not need to be changed as the device does not have the configuration of the old authentication server  
-  3.2 If the output matches the verification command, it is assumed that the configuration needs to be updated  
-  ..3.2.1 The configuration within the "resolveconfig" file is sent to the device, this configuration is designed to both add the new authentication server and remove the old server  
+  1. If the output does not match, it is assumed that the configuration does not need to be changed as the device does not have the configuration of the old authentication server  
+  2. If the output matches the verification command, it is assumed that the configuration needs to be updated. The configuration within the "resolveconfig" file is sent to the device, this configuration is designed to both add the new authentication server and remove the old server  
 4. Should there be any errors the tool will continue to the next device after logging the device with the error within a file location in the folder "./output"  
 
 ## How To Use:
