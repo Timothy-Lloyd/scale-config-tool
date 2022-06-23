@@ -3,6 +3,7 @@
 #Note3 please edit the "vars.py" file and adjust your credentials etc
 #Note4 please edit the "checkconfig.py" file with the show command and expected output
 #Note5 please edit the "resolveconfig" file with configurations to resolve if show command output matches above
+#Note6 please edit the "revertconfig" file with configurations to roll back the resolution should the configuration tests fail
 
 from netmiko import ConnectHandler
 import time
@@ -19,8 +20,11 @@ password = vars.password
 secret = vars.secret
 pt = vars.port
 dev_type = vars.devicetype
+
 showcmd = checkconfig.show
 verifycmd = checkconfig.verify
+testcmd = checkconfig.test
+testresult = checkconfig.testsuccess
 
 localtime = time.localtime()
 formattime = time.strftime("%d-%m-%Y %H:%M:%S" , localtime)
@@ -52,13 +56,41 @@ for dev_name, dev_address in devices.items():
         if verifycmd in output:
             print(red + dev_name + white + ":\r\nThe following string to change" + red + " WAS FOUND" + white + " in configuration:\r\n" + verifycmd + "\r\nResolving...")
             output = net_connect.send_config_from_file(config_file='resolveconfig')
-            print("Following configuration sent to device:\r\n" + output + "\r\nConfiguration changed as above...\r\n")
+            print("Following configuration sent to device:\r\n!\r\n" + output + "\r\n!\r\nConfiguration changed as above...")
+            print("...testing configuration...")
+            output = net_connect.send_command(testcmd)
+            if testresult in output:
+                net_connect.send_command("wr")
+                print("Configuration successful, please see output below:\r\n!\r\n" + green + output + white + "\r\n!\r\nDevice reconfiguration completed and config saved...\r\n\r\n")
+                fi = open(os.path.join("output/Config Changed " + datetime + ".txt"), "a")
+                fi.write("\r\n" + dev_name + " " + dev_address + "Time: " + formattime + "\r\nReconfigured and passed test as follows: " + output + "\r\n")
+                fi.close()
+            else:
+                print("Configuration failed test, please see output below:\r\n!\r\n" + red + output + white + "\r\n!\r\nReverting configuration...")
+                output = net_connect.send_config_from_file(config_file='revertconfig')
+                print("Following configuration sent to device:\r\n!\r\n" + output + "\r\n!\r\nConfiguration changed as above...")
+                print("...testing configuration...")
+                output = net_connect.send_command(testcmd)
+                if testresult in output:
+                    print("Reverting configuration successful, please see output below:\r\n!\r\n" + green + output + white + "\r\n!\r\nManually check device!!!")
+                    fi = open(os.path.join("output/TEST FAILED " + datetime + ".txt"), "a")
+                    fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nTesting configuration failed but configuration was successfully reverted. Manually check the configuration on device: " + dev_address + "\r\n\r\n")
+                    fi.close()
+                else:
+                    print("Reverting configuration failed test, please see output below:\r\n!\r\n" + red + output + white + "\r\n!\r\nManually check device!!!\r\n\r\n")
+                    fi = open(os.path.join("output/TEST FAILED " + datetime + ".txt"), "a")
+                    fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nTesting configuration failed and configuration revertion failed! Manually check the configuration on device: " + dev_address + "\r\n")
+                    fi.close()
+             
         else:
-            print(green + dev_name + white + ":\r\nThe following string to change was not found in configuration:\r\n" + verifycmd + "\r\nNo further action required...\r\n")
+            print(green + dev_name + white + ":\r\nThe following string to change was not found in configuration:\r\n" + verifycmd + "\r\nNo further action required...\r\n\r\n")
+            fi = open(os.path.join("output/Not configured " + datetime + ".txt"), "a")
+            fi.write("\r\n" + dev_name + " " + dev_address + "Time: " + formattime + "\r\nDevice was not configured as peer tool.\r\n")
+            fi.close()
         net_connect.disconnect()
 
     except:
-        print(dev_name + ":\r\nError detected, check manually...")
+        print(red + dev_name + ":\r\nError detected, check manually...\r\n\r\n" + white)
         fi = open(os.path.join("output/FAILED DEVICES " + datetime + ".txt"), "a")
         fi.write("\r\n" + dev_name + " failed at " + formattime + "\r\nCheck ssh access to: " + dev_address + "\r\n")
         fi.close()
