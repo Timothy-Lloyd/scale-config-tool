@@ -1,5 +1,8 @@
 # Scale-Config-Tool
 Scale-Config-Tool is a lightweight tool which will allow rapid configuration changes across a wide range of networking devices. In this example the tool is used to adjust the TACACS authentication server used to authenticate access to the switch management console. It can however be used for other purposes.  
+**To do list:**
+1. Integrate with Nornir for multi-threading  
+2. Create functions to tidy up busy code  
 
 ## Requirements:
 python3  
