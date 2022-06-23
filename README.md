@@ -15,8 +15,8 @@ Further to the overview above, the tool follows this logic flow:
 3. Check if the output from the show command matches a string defined as "verify" within "checkconfig.py". In our example, the string is set as part of a configuration line associated with the old authentication server   
     1. If the output does not match, it is assumed that the configuration does not need to be changed as the device does not have the configuration of the old authentication server  
     2. If the output matches the verification command, it is assumed that the configuration needs to be updated. The configuration within the "resolveconfig" file is sent to the device, this configuration is designed to both add the new authentication server and remove the old server in our example. The configuration is then tested using the "test" and "testsuccess" criteria within the "checkconfig.py" file. It is expected that the "test result" field should be found within the "test" command output. Please see below for the pass or fail senarios:  
-        1. If the device passes the test the system configuration is saved and the tool moves onto the next device
-        2. If the device fails the test, it is assumed that the configuration failed and needs to be rolled back. The configuration within the "revertconfig" file is sent to the device, this configuration is designed to both re-add the old authentication server and remove the new server in our example. The configuration is then tested using the "test" and "testsuccess" criteria within the "checkconfig.py" file. It is expected that the "test result" field should be found within the "test" command output. Either a pass or fail will be logged for the administrator to manually check the device.
+        1. If the device passes the test the system configuration is saved and the tool moves onto the next device  
+        2. If the device fails the test, it is assumed that the configuration failed and needs to be rolled back. The configuration within the "revertconfig" file is sent to the device, this configuration is designed to both re-add the old authentication server and remove the new server in our example. The configuration is then tested using the "test" and "testsuccess" criteria within the "checkconfig.py" file. It is expected that the "test result" field should be found within the "test" command output. Either a pass or fail will be logged for the administrator to manually check the device.  
 4. Should there be any errors the tool will continue to the next device after logging the device with the error within a file location in the folder "./output"  
 
 ## How To Use:
@@ -25,6 +25,6 @@ Further to the overview above, the tool follows this logic flow:
 3. Add credentials to file "vars.py"  
 4. Add show and verify commands to file "checkconfig.py"  
 5. Add resolution commands should the above commands match to file "resolveconfig"  
-6. Add rollback commands that can revert the configuration changes made in the previous step should configuration testing fail to file "revertconfig"
+6. Add rollback commands that can revert the configuration changes made in the previous step should configuration testing fail to file "revertconfig"  
 7. Run the tool "scale-config-tool.py" and observe output  
 8. Manually check the devices recorded in a file within the output folder  
