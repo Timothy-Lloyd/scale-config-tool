@@ -23,5 +23,5 @@ Further to the overview above, the tool follows this logic flow:
 3. Add credentials to file "vars.py"  
 4. Add show and verify commands to file "checkconfig.py"  
 5. Add resolution commands should the above commands match to file "resolveconfig"  
-6. Run the tool "change-config.py" and observe output  
+6. Run the tool "scale-config-tool.py" and observe output  
 7. Manually check the devices recorded in a file within the output folder  
