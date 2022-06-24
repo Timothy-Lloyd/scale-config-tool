@@ -7,6 +7,7 @@
 
 from netmiko import ConnectHandler
 import time
+import getpass
 import vars
 import os
 import checkconfig
@@ -15,9 +16,6 @@ red = "\033[0;31m"
 green = "\033[0;32m"
 white = "\033[00m"
     
-usern = vars.username
-password = vars.password
-secret = vars.secret
 pt = vars.port
 dev_type = vars.devicetype
 
@@ -31,6 +29,14 @@ formattime = time.strftime("%d-%m-%Y %H:%M:%S" , localtime)
 datetime = time.strftime("%d-%m-%Y" , localtime)
 
 print("Starting tool...\r\n")
+print("Please enter the credentials to perform the tasks required:\r\n")
+print("Username: ", end="")
+usern = str(input())
+password = getpass.getpass()
+secret = getpass.getpass(prompt='Secret: ')
+
+print("\r\nTool is ready, please check the " + red + "configuration files" + white + " you wish to send are correct!\r\nIf you wish to continue hit enter, otherwise use a break sequence...")
+input()
 
 devices = dict()
 file = open("devices.csv" , "r")

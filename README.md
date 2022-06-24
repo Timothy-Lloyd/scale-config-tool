@@ -26,7 +26,7 @@ Further to the overview above, the tool follows this logic flow:
 ## How To Use:
 1. First, add folder "output" to ./  
 2. Add devices to file "devices.csv"  
-3. Add credentials to file "vars.py"  
+3. Add any details to update to file "vars.py"  
 4. Add show and verify commands to file "checkconfig.py"  
 5. Add resolution commands should the above commands match to file "resolveconfig"  
 6. Add rollback commands that can revert the configuration changes made in the previous step should configuration testing fail to file "revertconfig"  
